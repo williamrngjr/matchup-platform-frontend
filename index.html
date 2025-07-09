@@ -5,13 +5,183 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DesignMatch | Connect with Designers, Architects & Contractors</title>
 
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --purple-main: #8f74a3;
+      --purple-light: #bfa3e0;
+      --purple-dark: #9c6db1;
+      --lavender: #f5f0fa;
+      --white: #ffffff;
+      --text: #333;
+      --charcoal: #1a1a1a;
+    }
 
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: var(--white);
+      color: var(--text);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Header */
+    header nav {
+      background-color: var(--charcoal);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.7rem;
+      font-weight: bold;
+    }
+
+    .logo span:first-child {
+      color: #f8f8f8;
+    }
+
+    .logo span:last-child {
+      color: #ccafd8;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-left: 1rem;
+    }
+
+    nav ul li a {
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 2rem;
+      max-width: 700px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-buttons .button {
+      padding: 0.75rem 1.5rem;
+      margin: 0.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 500;
+      color: var(--white);
+      display: inline-block;
+    }
+
+    .button.primary {
+      background-color: var(--purple-main);
+    }
+
+    .button.secondary {
+      background-color: var(--purple-light);
+    }
+
+    /* How it Works */
+    .how-it-works {
+      background-color: var(--lavender);
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .how-it-works h2 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .step {
+      background-color: var(--white);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      max-width: 300px;
+    }
+
+    .step img {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 1rem;
+    }
+
+    .step h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--charcoal);
+      color: #ccc;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
 </head>
 <body>
 
+  <!-- Header -->
   <header>
     <nav>
       <div class="logo">
@@ -29,6 +199,7 @@
     </nav>
   </header>
 
+  <!-- Hero -->
   <main class="hero">
     <div class="hero-content">
       <h1>Build Better. Together.</h1>
@@ -40,6 +211,7 @@
     </div>
   </main>
 
+  <!-- How it Works -->
   <section class="how-it-works">
     <h2>How DesignMatch Works</h2>
     <div class="steps">
@@ -61,10 +233,12 @@
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 DesignMatch. Connecting great ideas with great talent.</p>
   </footer>
 
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
