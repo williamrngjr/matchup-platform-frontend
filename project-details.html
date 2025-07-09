@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details - MatchUp</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">MatchUp</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore-designers.html">Designers</a></li>
+                <li><a href="explore-architects.html">Architects</a></li>
+                <li><a href="rankings.html">Rankings</a></li>
+                <li><a href="#" id="dashboardLink">Dashboard</a></li> <li><a href="#" id="logoutButton">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2 id="projectTitleHeader">Loading Project...</h2>
+        <div id="projectDetailsContent">
+            <p>Loading project details...</p>
+        </div>
+        <div id="message" style="margin-top: 15px; text-align: center; color: red;"></div>
+
+        <div id="proposalSection" style="display:none; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+            <h3>Submit a Proposal</h3>
+            <form id="proposalForm">
+                <div class="form-group">
+                    <label for="bidAmount">Your Bid ($)</label>
+                    <input type="number" id="bidAmount" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="proposalMessage">Your Message / Terms</label>
+                    <textarea id="proposalMessage" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit Proposal</button>
+                </div>
+                <div id="proposalMessageDiv" style="margin-top: 10px; text-align: center; color: red;"></div>
+            </form>
+        </div>
+
+        <div id="viewProposalsSection" style="display:none; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+            <h3>Received Proposals</h3>
+            <ul id="proposalsList">
+                <p>No proposals received yet.</p>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 MatchUp. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/project-details.js"></script>
+    <script src="js/logout.js"></script>
+</body>
+</html>
