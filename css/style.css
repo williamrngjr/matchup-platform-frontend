@@ -81,11 +81,11 @@ nav ul li a {
 
 nav ul li a:hover {
   background-color: rgba(255, 255, 255, 0.1); /* Subtle hover for navigation links */
+  color: #bfa3e0;
 }
 
 /* Buttons */
 .button {
-  display: inline-block;
   padding: 0.75rem 1.5rem; /* Consistent with index.html */
   border-radius: 5px; /* Consistent with index.html */
   text-decoration: none;
