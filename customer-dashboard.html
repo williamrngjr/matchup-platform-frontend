@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - MatchUp</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">MatchUp</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore-designers.html">Designers</a></li>
+                <li><a href="explore-architects.html">Architects</a></li>
+                <li><a href="rankings.html">Rankings</a></li>
+                <li><a href="customer-dashboard.html">Dashboard</a></li>
+                <li><a href="#" id="logoutButton">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Welcome, Customer!</h2>
+        <div class="dashboard-sections">
+            <div class="dashboard-section">
+                <h3>My Projects</h3>
+                <p>No projects posted yet. <a href="post-project.html">Post a New Project</a></p>
+                <ul id="customerProjectsList">
+                    </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>Account & Profile</h3>
+                <ul>
+                    <li><a href="customer-profile.html">Edit Profile</a></li>
+                    <li><a href="post-project.html" class="button primary">Post a New Project</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 MatchUp. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/customer-dashboard.js"></script>
+    <script src="js/logout.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - MatchUp</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">MatchUp</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore-designers.html">Designers</a></li>
+                <li><a href="explore-architects.html">Architects</a></li>
+                <li><a href="rankings.html">Rankings</a></li>
+                <li><a href="admin-dashboard.html">Admin</a></li>
+                <li><a href="#" id="logoutButton">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Admin Dashboard</h2>
+        <div class="dashboard-sections">
+            <div class="dashboard-section">
+                <h3>User Management</h3>
+                <input type="text" id="userSearch" placeholder="Search users by email or name..." style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                <ul id="userList">
+                    <p>Loading users...</p>
+                    </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>Project Oversight</h3>
+                <ul id="projectOversightList">
+                    <p>Loading projects...</p>
+                    </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>Analytics & Reports (Placeholder)</h3>
+                <p>Coming soon: Site statistics, professional performance, and more.</p>
+                <ul>
+                    <li><a href="#">View Site Stats</a></li>
+                    <li><a href="#">Generate Reports</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="message" style="margin-top: 15px; text-align: center; color: red;"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 MatchUp. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+    <script src="js/logout.js"></script>
+</body>
+</html>
