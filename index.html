@@ -31,12 +31,20 @@
     }
 
     /* Header */
-    header nav {
-      background-color: var(--charcoal);
-      padding: 1rem 2rem;
+    header {
+      background-color: var(--charcoal); /* Consistent with index.html */
+      color: var(--white);
+      padding: 1rem 0; /* Adjusted for consistency with index.html header nav padding */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem; /* Consistent with index.html header nav padding */
     }
 
     .logo {
