@@ -14,9 +14,8 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="explore-designers.html">Designers</a></li>
                 <li><a href="explore-architects.html">Architects</a></li>
-                <li><a href="rankings.html">Rankings</a></li>
-                <li><a href="designer-dashboard.html">Dashboard</a></li>
-                <li><a href="#" id="logoutButton">Logout</a></li>
+                <li><a href="explore-contractors.html">Contractors</a></li> <li><a href="rankings.html">Rankings</a></li>
+                <li><a href="login.html">Login</a></li> <li><a href="signup.html" class="button">Sign Up</a></li> <li><a href="#" id="dashboardLink">Dashboard</a></li> <li><a href="#" id="logoutButton">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -28,14 +27,13 @@
                 <h3>My Profile</h3>
                 <ul>
                     <li><a href="designer-profile-edit.html">Edit My Profile</a></li>
-                    <li><a href="designer-profile.html?id=YOUR_DESIGNER_ID">View Public Profile</a></li>
-                    </ul>
+                    <li><a href="designer-profile.html?id=YOUR_DESIGNER_ID" id="viewPublicProfileLink">View Public Profile</a></li> </ul>
             </div>
             <div class="dashboard-section">
                 <h3>Available Projects</h3>
                 <ul id="availableProjectsList">
                     <p>Loading available projects...</p>
-                    </ul>
+                </ul>
             </div>
             <div class="dashboard-section">
                 <h3>My Proposals (Optional)</h3>
@@ -53,8 +51,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
     <script src="js/firebase-config.js"></script>
-    <script src="js/designer-dashboard.js"></script>
-    <script src="js/logout.js"></script>
-</body>
+
+    <script src="js/main.js"></script> <script src="js/designer-dashboard.js"></script>
+    </body>
 </html>

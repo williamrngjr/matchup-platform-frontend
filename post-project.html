@@ -14,8 +14,13 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="explore-designers.html">Designers</a></li>
                 <li><a href="explore-architects.html">Architects</a></li>
+                <li><a href="explore-contractors.html">Contractors</a></li> <!-- ADDED CONTRACTORS LINK -->
                 <li><a href="rankings.html">Rankings</a></li>
-                <li><a href="customer-dashboard.html">Dashboard</a></li>
+                <!-- Login/Sign Up links (initially visible, hidden by JS if logged in) -->
+                <li><a href="login.html">Login</a></li> <!-- ADDED LOGIN LINK -->
+                <li><a href="signup.html" class="button">Sign Up</a></li> <!-- ADDED SIGN UP LINK -->
+                <!-- Dashboard/Logout links (initially hidden, shown by JS if logged in) -->
+                <li><a href="#" id="dashboardLink">Dashboard</a></li> <!-- MODIFIED TO BE THE DYNAMIC DASHBOARD LINK -->
                 <li><a href="#" id="logoutButton">Logout</a></li>
             </ul>
         </nav>
@@ -67,11 +72,21 @@
         <p>&copy; 2025 MatchUp. All rights reserved.</p>
     </footer>
 
+    <!-- CORRECT SCRIPT BLOCK -->
+    <!-- Firebase SDK - App first, then specific services -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+    <!-- YOUR Firebase config script -->
     <script src="js/firebase-config.js"></script>
+
+    <!-- YOUR Global main.js script -->
+    <script src="js/main.js"></script> <!-- ADDED main.js -->
+
+    <!-- Page-specific script -->
     <script src="js/post-project.js"></script>
-    <script src="js/logout.js"></script>
+    <!-- REMOVED js/logout.js - Handled by main.js -->
+
 </body>
 </html>
