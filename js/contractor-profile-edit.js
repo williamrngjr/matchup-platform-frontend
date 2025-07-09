@@ -9,13 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const portfolioItemsDiv = document.getElementById('portfolioItems');
     const addPortfolioItemButton = document.getElementById('addPortfolioItemButton');
     const messageDiv = document.getElementById('message');
+    const saveProfileButton = editProfileForm.querySelector('button[type="submit"]'); // Get the submit button
 
-    let currentContractorDocId = null;
+    let currentContractorDocId = null; // This will store the Firestore document ID for the contractor
+
+    // Initially disable the save button to prevent premature clicks
+    if (saveProfileButton) {
+        saveProfileButton.disabled = true;
+        saveProfileButton.textContent = 'Loading Profile...';
+    }
 
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             const userDoc = await db.collection('users').doc(user.uid).get();
-            if (!userDoc.exists || userDoc.data().userType !== 'contractor') { // Check specifically for 'contractor'
+            if (!userDoc.exists || userDoc.data().userType !== 'contractor') {
                 alert('Access Denied. You are not authorized to edit this profile.');
                 window.location.href = 'login.html';
                 return;
@@ -26,9 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!contractorQuerySnapshot.empty) {
                     const contractorDoc = contractorQuerySnapshot.docs[0];
-                    currentContractorDocId = contractorDoc.id;
+                    currentContractorDocId = contractorDoc.id; // Store the document ID
                     const contractorData = contractorDoc.data();
 
+                    // Populate form fields with existing data
                     nameInput.value = contractorData.name || '';
                     profilePictureURLInput.value = contractorData.profilePictureURL || '';
                     bioInput.value = contractorData.bio || '';
@@ -36,14 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     experienceYearsInput.value = contractorData.experienceYears || '';
                     locationInput.value = contractorData.location || '';
 
+                    // Load portfolio items
                     if (contractorData.portfolio && contractorData.portfolio.length > 0) {
                         contractorData.portfolio.forEach(item => addPortfolioItemField(item.imageURL, item.description));
                     }
                 } else {
-                    currentContractorDocId = user.uid; // Use UID as doc ID for easy lookup
+                    // Contractor profile DOES NOT exist, create a new one using user.uid as the document ID
+                    currentContractorDocId = user.uid;
                     await db.collection('contractors').doc(currentContractorDocId).set({
                         userId: user.uid,
-                        name: user.email.split('@')[0],
+                        name: user.email.split('@')[0], // Default name
                         userType: 'contractor',
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         averageRating: 0,
@@ -52,21 +62,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, { merge: true });
 
                     alert('Your contractor profile has been initialized! Please fill in your details.');
+                    // Form fields will be empty, ready for input
                 }
+
+                // Enable the save button and update its text after profile is loaded/initialized
+                if (saveProfileButton) {
+                    saveProfileButton.disabled = false;
+                    saveProfileButton.textContent = 'Save Profile';
+                }
+
             } catch (error) {
                 console.error('Error fetching/initializing contractor profile:', error);
                 messageDiv.textContent = `Error loading profile: ${error.message}`;
+                // Keep button disabled on error
             }
 
+            // --- Event Listeners (ensure these are set up only once) ---
             addPortfolioItemButton.addEventListener('click', () => addPortfolioItemField('', ''));
 
             editProfileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                messageDiv.textContent = '';
+                messageDiv.textContent = ''; // Clear previous messages
 
+                // Re-check currentContractorDocId right before saving (extra safeguard)
                 if (!currentContractorDocId) {
                     messageDiv.textContent = 'Error: Contractor profile ID not found. Please refresh the page.';
-                    console.error('Attempted to save profile before currentContractorDocId was set.');
+                    console.error('Attempted to save profile when currentContractorDocId was unexpectedly null.');
                     return;
                 }
 
@@ -81,12 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.portfolio-item-group').forEach(group => {
                     const imgUrl = group.querySelector('.portfolio-image-url').value;
                     const desc = group.querySelector('.portfolio-description').value;
-                    if (imgUrl) {
+                    if (imgUrl) { // Only add if image URL is provided
                         portfolioItems.push({ imageURL: imgUrl, description: desc });
                     }
                 });
 
                 try {
+                    // Update the document using currentContractorDocId
                     await db.collection('contractors').doc(currentContractorDocId).update({
                         name: name,
                         profilePictureURL: profilePictureURL,
@@ -95,21 +117,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         experienceYears: experienceYears,
                         location: location,
                         portfolio: portfolioItems,
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp() // Add a last updated timestamp
                     });
                     alert('Profile updated successfully!');
-                    window.location.href = 'contractor-dashboard.html';
+                    window.location.href = 'contractor-dashboard.html'; // Redirect to dashboard
                 } catch (error) {
                     console.error('Error updating profile:', error);
                     messageDiv.textContent = `Error updating profile: ${error.message}`;
                 }
             });
         } else {
+            // No user is signed in.
             alert('You must be logged in to edit your profile.');
             window.location.href = 'login.html';
         }
     });
 
+    // Function to add a portfolio item field set
     function addPortfolioItemField(imageUrl = '', description = '') {
         const group = document.createElement('div');
         group.classList.add('form-group', 'portfolio-item-group');
