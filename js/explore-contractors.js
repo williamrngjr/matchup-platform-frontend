@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const card = document.createElement('div');
                 card.classList.add('professional-card');
                 card.innerHTML = `
-                    <img src="${contractor.profilePictureURL || 'https://via.placeholder.com/100'}" alt="${contractor.name}">
+                    <img src="${contractor.profilePictureURL || getRandomDefaultProfilePicture()}" alt="${contractor.name}">
                     <h3>${contractor.name}</h3>
                     <p>Specialization: ${contractor.specialization ? contractor.specialization.join(', ') : 'N/A'}</p>
                     <p>Experience: ${contractor.experienceYears || 'N/A'} years in business</p>

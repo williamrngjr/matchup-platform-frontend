@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const card = document.createElement('div');
                 card.classList.add('professional-card');
                 card.innerHTML = `
-                    <img src="${architect.profilePictureURL || 'https://via.placeholder.com/100'}" alt="${architect.name}">
+                    <img src="${architect.profilePictureURL || getRandomDefaultProfilePicture()}" alt="${architect.name}">
                     <h3>${architect.name}</h3>
                     <p>Specialization: ${architect.specialization.join(', ')}</p>
                     <p>Experience: ${architect.experienceYears} years</p>

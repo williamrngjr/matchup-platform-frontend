@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const designer = doc.data();
             designerProfileDiv.innerHTML = `
                 <div class="profile-header">
-                    <img src="${designer.profilePictureURL || 'https://via.placeholder.com/120'}" alt="${designer.name}" class="profile-avatar">
+                    <img src="${designer.profilePictureURL || getRandomDefaultProfilePicture()}" alt="${designer.name}" class="profile-avatar">
                     <h2>${designer.name}</h2>
                     <p>${designer.bio || 'No bio provided.'}</p>
                     <div class="rating">Rating: ${designer.averageRating || 'N/A'} (${designer.numberOfReviews || 0} reviews)</div>

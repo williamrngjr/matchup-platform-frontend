@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const contractor = doc.data();
             contractorProfileDiv.innerHTML = `
                 <div class="profile-header">
-                    <img src="${contractor.profilePictureURL || 'https://via.placeholder.com/120'}" alt="${contractor.name}" class="profile-avatar">
+                    <img src="${contractor.profilePictureURL || getRandomDefaultProfilePicture()}" alt="${contractor.name}" class="profile-avatar">
                     <h2>${contractor.name}</h2>
                     <p>${contractor.bio || 'No bio provided.'}</p>
                     <div class="rating">Rating: ${contractor.averageRating || 'N/A'} (${contractor.numberOfReviews || 0} reviews)</div>

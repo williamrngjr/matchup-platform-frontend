@@ -76,3 +76,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+const DEFAULT_PROFILE_PICTURES = [
+    'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', // Generic user avatar
+    'https://cdn-icons-png.flaticon.com/512/1998/1998637.png', // Cute cat avatar
+    'https://cdn-icons-png.flaticon.com/512/1998/1998708.png', // Cute dog avatar
+    'https://cdn-icons-png.flaticon.com/512/1998/1998703.png', // Cute owl avatar
+    'https://cdn-icons-png.flaticon.com/512/1998/1998711.png'  // Cute fox avatar
+];
+
+// Function to get a random default image
+function getRandomDefaultProfilePicture() {
+    const randomIndex = Math.floor(Math.random() * DEFAULT_PROFILE_PICTURES.length);
+    return DEFAULT_PROFILE_PICTURES[randomIndex];
+}
