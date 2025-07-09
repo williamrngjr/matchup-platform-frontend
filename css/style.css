@@ -1,175 +1,242 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+/* style.css */
+
+/* Google Fonts - Make sure to link this in your HTML <head> for all pages */
+/* <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet"> */
+
+/* Root variables from index.html for consistent colors */
+:root {
+  --purple-main: #8f74a3;
+  --purple-light: #bfa3e0;
+  --purple-dark: #9c6db1;
+  --lavender: #f5f0fa;
+  --white: #ffffff;
+  --text: #333;
+  --charcoal: #1a1a1a;
+  --light-gray: #f8f8f8; /* Added for subtle backgrounds */
+  --medium-gray: #ccc; /* For borders, etc. */
+  --dark-gray-text: #555; /* For secondary text */
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--white); /* Consistent with index.html */
+  color: var(--text);
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif; /* Consistent with index.html */
+}
+
+/* Header */
 header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 1rem 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: var(--charcoal); /* Consistent with index.html */
+  color: var(--white);
+  padding: 1rem 0; /* Adjusted for consistency with index.html header nav padding */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem; /* Consistent with index.html header nav padding */
 }
 
 .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
+  font-size: 1.7rem; /* Consistent with index.html */
+  font-weight: bold;
+}
+
+.logo span:first-child {
+  color: var(--light-gray); /* Matched to #f8f8f8 from index.html */
+}
+
+.logo span:last-child {
+  color: #ccafd8; /* Matched to #ccafd8 from index.html */
 }
 
 nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
 }
 
 nav ul li {
-    margin-left: 20px;
+  margin-left: 1rem; /* Consistent with index.html */
 }
 
 nav ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  color: var(--white);
+  text-decoration: none;
+  padding: 0.5rem; /* Consistent with index.html */
+  font-weight: 500; /* Consistent with index.html */
+  border-radius: 5px; /* Added for consistency with button styles */
+  transition: background-color 0.3s ease;
 }
 
 nav ul li a:hover {
-    background-color: #34495e;
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle hover for navigation links */
 }
 
+/* Buttons */
 .button {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 0.75rem 1.5rem; /* Consistent with index.html */
+  border-radius: 5px; /* Consistent with index.html */
+  text-decoration: none;
+  font-weight: 500; /* Consistent with index.html */
+  color: var(--white); /* Buttons text is white */
+  transition: background-color 0.3s ease;
 }
 
 .button.primary {
-    background-color: #e67e22;
-    color: white;
+  background-color: var(--purple-main); /* Consistent with index.html */
 }
 
 .button.primary:hover {
-    background-color: #d35400;
+  background-color: var(--purple-dark); /* Darker purple on hover */
 }
 
 .button.secondary {
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
+  background-color: var(--purple-light); /* Consistent with index.html */
+  border: none; /* No border for these buttons */
 }
 
 .button.secondary:hover {
-    background-color: white;
-    color: #2c3e50;
+  background-color: var(--purple-main); /* Primary purple on hover */
 }
 
+/* Hero Section */
 .hero {
-    background: url('https://via.placeholder.com/1500x800/2980b9/ffffff?text=Your+Dream+Space') no-repeat center center/cover;
-    color: white;
-    text-align: center;
-    padding: 100px 20px;
-    height: 60vh; /* Adjust as needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative; /* Needed for pseudo-element overlay */
+  background-image: url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914'); /* Consistent with index.html */
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  height: 80vh; /* Adjusted for consistency with index.html */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem; /* Adjusted for consistency with index.html hero-content padding */
+}
+
+.hero::before { /* Overlay from index.html */
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative; /* Z-index needed for content to be above overlay */
+  z-index: 2;
+  padding: 2rem; /* Adjusted for consistency with index.html */
+  max-width: 700px; /* Consistent with index.html */
 }
 
 .hero-content h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
+  font-size: 3rem; /* Consistent with index.html */
+  margin-bottom: 1rem; /* Consistent with index.html */
 }
 
 .hero-content p {
-    font-size: 1.3rem;
-    margin-bottom: 40px;
+  font-size: 1.2rem; /* Consistent with index.html */
+  margin-bottom: 2rem; /* Consistent with index.html */
 }
 
 .hero-buttons a {
-    margin: 0 10px;
+  margin: 0.5rem; /* Consistent with index.html */
 }
 
+/* How It Works Section */
 .how-it-works {
-    text-align: center;
-    padding: 50px 20px;
-    background-color: white;
+  background-color: var(--lavender); /* Consistent with index.html */
+  text-align: center;
+  padding: 4rem 2rem; /* Consistent with index.html */
 }
 
 .how-it-works h2 {
-    font-size: 2.5rem;
-    margin-bottom: 40px;
+  font-size: 2.2rem; /* Consistent with index.html */
+  margin-bottom: 2rem; /* Consistent with index.html */
 }
 
 .steps {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem; /* Consistent with index.html */
 }
 
 .step {
-    background-color: #ecf0f1;
-    padding: 30px;
-    border-radius: 8px;
-    width: 28%;
-    min-width: 280px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background-color: var(--white); /* Consistent with index.html */
+  padding: 2rem; /* Consistent with index.html */
+  border-radius: 10px; /* Consistent with index.html */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Consistent with index.html */
+  max-width: 300px; /* Consistent with index.html */
+  /* Replaced width/min-width for responsiveness as per index.html approach */
+  flex: 1 1 auto; /* Allows items to grow/shrink, max-width controls ultimate size */
 }
+
+.step img {
+  width: 70px; /* Consistent with index.html */
+  height: 70px; /* Consistent with index.html */
+  margin-bottom: 1rem; /* Consistent with index.html */
+  /* Icon color adjustment to match purple from index.html */
+  filter: invert(47%) sepia(35%) saturate(399%) hue-rotate(222deg) brightness(84%) contrast(85%); /* Converts black to a purplish tone */
+}
+
 
 .step h3 {
-    font-size: 1.5rem;
-    color: #2c3e50;
-    margin-bottom: 15px;
+  font-size: 1.2rem; /* Consistent with index.html */
+  margin-bottom: 0.5rem; /* Consistent with index.html */
 }
 
+.step p {
+  font-size: 1rem; /* Consistent with index.html */
+  color: var(--dark-gray-text); /* Consistent with index.html */
+}
+
+/* Footer */
 footer {
-    background-color: #34495e;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 50px;
+  background-color: var(--charcoal); /* Consistent with index.html */
+  color: #ccc; /* Lighter grey for text */
+  text-align: center;
+  padding: 1rem; /* Consistent with index.html */
+  margin-top: 0; /* Remove top margin */
 }
 
-/* Forms and general container */
+/* --- General Containers and Forms --- */
 .container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Lighter shadow for harmony */
 }
 
 .container h2 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 30px;
+  text-align: center;
+  color: var(--text); /* Use general text color */
+  margin-bottom: 30px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500; /* Adjusted to be consistent with Inter font weight */
+  color: var(--dark-gray-text);
 }
 
 .form-group input[type="email"],
@@ -177,278 +244,285 @@ footer {
 .form-group input[type="text"],
 .form-group select,
 .form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    box-sizing: border-box; /* Include padding in width */
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--medium-gray); /* Consistent border color */
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif; /* Ensure form elements use Inter font */
 }
 
 .form-group button {
-    width: 100%;
-    padding: 15px;
-    background-color: #e67e22;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  width: 100%;
+  padding: 15px;
+  background-color: var(--purple-main); /* Consistent button color */
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Inter', sans-serif; /* Ensure button uses Inter font */
+  font-weight: 500;
 }
 
 .form-group button:hover {
-    background-color: #d35400;
+  background-color: var(--purple-dark); /* Consistent button hover */
 }
 
 .form-link {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .form-link a {
-    color: #3498db;
-    text-decoration: none;
+  color: var(--purple-main); /* Link color consistent with primary purple */
+  text-decoration: none;
 }
 
 .form-link a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-/* User Profile specific styles */
+/* --- User Profile specific styles --- */
 .profile-header {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .profile-header h2 {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .profile-avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto 20px;
-    border: 4px solid #e67e22;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 20px;
+  border: 4px solid var(--purple-main); /* Border color consistent */
 }
 
 .profile-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
 .detail-item {
-    background-color: #ecf0f1;
-    padding: 15px 25px;
-    border-radius: 6px;
-    flex: 1 1 calc(50% - 20px); /* Two columns on larger screens */
-    min-width: 280px;
+  background-color: var(--lavender); /* Consistent light background */
+  padding: 15px 25px;
+  border-radius: 6px;
+  flex: 1 1 calc(50% - 20px);
+  min-width: 280px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03); /* Lighter shadow */
 }
 
 .detail-item strong {
-    color: #2c3e50;
-    display: block;
-    margin-bottom: 5px;
+  color: var(--text); /* Consistent text color */
+  display: block;
+  margin-bottom: 5px;
 }
 
 .portfolio-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
 }
 
 .portfolio-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Lighter shadow */
 }
 
 .portfolio-item p {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #666;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: var(--dark-gray-text);
 }
 
-/* Professional List/Card Styles */
+/* --- Professional List/Card Styles --- */
 .professional-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 30px 20px;
-    max-width: 1200px;
-    margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: 20px auto;
 }
 
 .professional-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    padding: 25px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08); /* Lighter shadow for harmony */
+  padding: 25px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .professional-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Lighter hover shadow */
 }
 
 .professional-card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 15px;
-    border: 3px solid #3498db;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid var(--purple-main); /* Consistent border color */
 }
 
 .professional-card h3 {
-    margin-bottom: 10px;
-    color: #2c3e50;
+  margin-bottom: 10px;
+  color: var(--text); /* Consistent text color */
 }
 
 .professional-card p {
-    font-size: 0.95em;
-    color: #666;
-    margin-bottom: 8px;
+  font-size: 0.95em;
+  color: var(--dark-gray-text);
+  margin-bottom: 8px;
 }
 
 .professional-card .rating {
-    font-weight: bold;
-    color: #e67e22;
-    margin-bottom: 15px;
+  font-weight: bold;
+  color: var(--purple-main); /* Rating color consistent with primary purple */
+  margin-bottom: 15px;
 }
 
 .professional-card .button {
-    padding: 8px 15px;
-    font-size: 0.9em;
-    margin-top: 10px;
+  padding: 8px 15px;
+  font-size: 0.9em;
+  margin-top: 10px;
 }
 
-/* Search and Filter Bar */
+/* --- Search and Filter Bar --- */
 .search-filter-bar {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    align-items: center;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Lighter shadow */
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .search-filter-bar input[type="text"],
 .search-filter-bar select {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    min-width: 150px;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  min-width: 150px;
+  font-family: 'Inter', sans-serif; /* Ensure form elements use Inter font */
 }
 
 .search-filter-bar button {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  background-color: var(--purple-main); /* Consistent button color */
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Inter', sans-serif; /* Ensure button uses Inter font */
+  font-weight: 500;
 }
 
 .search-filter-bar button:hover {
-    background-color: #2980b9;
+  background-color: var(--purple-dark); /* Consistent button hover */
 }
 
-/* Rankings Page */
+/* --- Rankings Page --- */
 .rankings-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 30px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
 }
 
 .rankings-table th, .rankings-table td {
-    border: 1px solid #ddd;
-    padding: 12px 15px;
-    text-align: left;
+  border: 1px solid var(--medium-gray); /* Consistent border color */
+  padding: 12px 15px;
+  text-align: left;
 }
 
 .rankings-table th {
-    background-color: #2c3e50;
-    color: white;
+  background-color: var(--charcoal); /* Consistent with header background */
+  color: var(--white);
 }
 
 .rankings-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+  background-color: var(--light-gray); /* Lighter even row background */
 }
 
 .rankings-table tr:hover {
-    background-color: #f1f1f1;
+  background-color: var(--lavender); /* Hover color consistent with theme */
 }
 
-/* User Dashboard */
+/* --- User Dashboard --- */
 .dashboard-sections {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
 }
 
 .dashboard-section {
-    flex: 1;
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    min-width: 300px;
+  flex: 1;
+  background-color: var(--white);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Lighter shadow */
+  min-width: 300px;
 }
 
 .dashboard-section h3 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+  color: var(--text); /* Consistent text color */
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--light-gray); /* Lighter border */
+  padding-bottom: 10px;
 }
 
 .dashboard-section ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .dashboard-section ul li {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #ecf0f1;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: var(--lavender); /* Consistent background for list items */
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .dashboard-section ul li a {
-    color: #3498db;
-    text-decoration: none;
-    font-weight: bold;
+  color: var(--purple-main); /* Link color consistent with primary purple */
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .dashboard-section ul li a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-/* Project Posting Form */
+/* --- Project Posting Form --- */
 .project-form-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Lighter shadow */
 }
