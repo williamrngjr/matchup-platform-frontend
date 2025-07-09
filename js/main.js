@@ -1,24 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Select relevant navigation elements
-    const loginLink = document.querySelector('nav ul li a[href="login.html"]');
-    const signUpLink = document.querySelector('nav ul li a[href="signup.html"]');
-    const dashboardLink = document.getElementById('dashboardLink'); // Assumes an ID on dashboard link
-    const logoutButton = document.getElementById('logoutButton'); // Assumes an ID on logout link
+    // Select relevant navigation elements by their specific structure or IDs
+    const loginLinkLi = document.querySelector('nav ul li a[href="login.html"]')?.closest('li'); // Get the parent <li> of the Login link
+    const signUpLinkLi = document.querySelector('nav ul li a[href="signup.html"]')?.closest('li'); // Get the parent <li> of the Sign Up link
 
-    // Hide dashboard and logout links by default, show login/signup
-    // Check if elements exist before trying to manipulate them (important for pages where they might not be present, though our nav is consistent)
+    // The Dashboard and Logout links should have IDs in HTML as set in previous steps
+    const dashboardLink = document.getElementById('dashboardLink');
+    const logoutButton = document.getElementById('logoutButton');
+
+    // Initial state: Hide Dashboard/Logout, Show Login/Signup (if elements exist)
     if (dashboardLink) dashboardLink.style.display = 'none';
     if (logoutButton) logoutButton.style.display = 'none';
-    // Ensure these are visible by default in HTML, and block makes them visible if JS is slow
-    if (loginLink) loginLink.style.display = 'block';
-    if (signUpLink) signUpLink.style.display = 'block';
+    if (loginLinkLi) loginLinkLi.style.display = 'block'; // Ensure parent <li> is visible
+    if (signUpLinkLi) signUpLinkLi.style.display = 'block'; // Ensure parent <li> is visible
+
 
     // Firebase Authentication State Observer
     auth.onAuthStateChanged(async (user) => {
         if (user) {
-            // User is logged in
-            if (loginLink) loginLink.style.display = 'none';
-            if (signUpLink) signUpLink.style.display = 'none';
+            // User is logged in: Hide Login/Signup, Show Dashboard/Logout
+            if (loginLinkLi) loginLinkLi.style.display = 'none';
+            if (signUpLinkLi) signUpLinkLi.style.display = 'none';
             if (dashboardLink) dashboardLink.style.display = 'block';
             if (logoutButton) logoutButton.style.display = 'block';
 
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         dashboardLink.href = 'designer-dashboard.html';
                     } else if (userType === 'architect') {
                         dashboardLink.href = 'architect-dashboard.html';
-                    } else if (userType === 'contractor') { // Added Contractor
+                    } else if (userType === 'contractor') {
                         dashboardLink.href = 'contractor-dashboard.html';
                     } else if (userType === 'admin') {
                         dashboardLink.href = 'admin-dashboard.html';
@@ -43,15 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Set up Logout functionality (now handled centrally in main.js)
+            // Set up Logout functionality
             if (logoutButton) {
-                // Ensure the event listener is only added once to avoid duplicates
-                if (!logoutButton._hasClickListener) {
+                if (!logoutButton._hasClickListener) { // Prevent adding multiple listeners
                     logoutButton.addEventListener('click', async (e) => {
                         e.preventDefault();
                         try {
                             await auth.signOut();
                             alert('You have been logged out.');
+                            // After logout, main.js will re-run onAuthStateChanged and show login/signup
                             window.location.href = 'login.html'; // Redirect to login page
                         } catch (error) {
                             console.error('Error logging out:', error);
@@ -63,9 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         } else {
-            // User is logged out
-            if (loginLink) loginLink.style.display = 'block';
-            if (signUpLink) signUpLink.style.display = 'block';
+            // User is logged out: Show Login/Signup, Hide Dashboard/Logout
+            if (loginLinkLi) loginLinkLi.style.display = 'block';
+            if (signUpLinkLi) signUpLinkLi.style.display = 'block';
             if (dashboardLink) dashboardLink.style.display = 'none';
             if (logoutButton) logoutButton.style.display = 'none';
         }
