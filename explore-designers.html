@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore Designers - MatchUp</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Explore Designers - DesignMatch</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <!-- Link to your external stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Header - Consistent with index.html -->
     <header>
-        <nav>
-            <div class="logo">MatchUp</div>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="explore-designers.html">Designers</a></li>
-                <li><a href="explore-architects.html">Architects</a></li>
-                <li><a href="explore-contractors.html">Contractors</a></li> <li><a href="rankings.html">Rankings</a></li>
-                <li><a href="login.html">Login</a></li> <li><a href="signup.html" class="button">Sign Up</a></li> <li><a href="#" id="dashboardLink">Dashboard</a></li>
-                <li><a href="#" id="logoutButton">Logout</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <div class="logo">
+          <span>Design</span><span>Match</span>
+        </div>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="explore-designers.html">Designers</a></li>
+          <li><a href="explore-architects.html">Architects</a></li>
+          <li><a href="explore-contractors.html">Contractors</a></li>
+          <li><a href="rankings.html">Rankings</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="signup.html" class="button">Sign Up</a></li>
+        </ul>
+      </nav>
     </header>
 
     <main class="container">
@@ -42,7 +49,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 MatchUp. All rights reserved.</p>
+        <p>&copy; 2025 DesignMatch. Connecting great ideas with great talent.</p>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -50,9 +57,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
 
     <script src="js/firebase-config.js"></script>
-
     <script src="js/main.js"></script>
-
     <script src="js/explore-designers.js"></script>
 
 </body>
