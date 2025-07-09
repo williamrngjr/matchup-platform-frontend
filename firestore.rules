@@ -50,15 +50,16 @@ service cloud.firestore {
 
     // --- PROJECT LISTINGS ---
     // Rules for the 'projects' collection
-    match /projects/{projectId} {
-      allow read: if true; // Projects are generally public for viewing
-      // Only authenticated customers can create projects, and the customerId must match their UID
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.customerId;
-      // Project owner (customer) can update their own project
-      allow update: if request.auth != null && request.auth.uid == resource.data.customerId;
-      allow delete: if false; // Customers cannot delete their own projects directly (maybe "archive" status instead)
-      allow read, update, delete: if isUserAdmin(); // Admin override
-    }
+match /projects/{projectId} {
+  allow read: if true; // Projects are generally public for viewing
+  // Only authenticated customers can create projects, and the customerId must match their UID
+  allow create: if request.auth != null && request.auth.uid == request.resource.data.customerId;
+  // Project owner (customer) can update their own project
+  allow update: if request.auth != null && request.auth.uid == resource.data.customerId;
+  // Allow project owner to delete their own project
+  allow delete: if request.auth != null && request.auth.uid == resource.data.customerId;
+  allow read, update, delete: if isUserAdmin(); // Admin override for read/update/delete
+}
 
     // --- PROJECT PROPOSALS (OPTIONAL, if you implement bidding) ---
     // This rule assumes proposals are direct subcollections of projects OR have a projectId field

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectDetailsContent = document.getElementById('projectDetailsContent');
     const messageDiv = document.getElementById('message');
     const dashboardLink = document.getElementById('dashboardLink');
+    const deleteProjectButton = document.getElementById('deleteProjectButton'); // NEW
 
     const proposalSection = document.getElementById('proposalSection');
     const proposalForm = document.getElementById('proposalForm');
@@ -30,12 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     auth.onAuthStateChanged(async (user) => {
         if (!user) {
-            // User not logged in, but we still want to show project details (if public read is allowed)
-            // Can choose to redirect to login or show limited info
-            // For now, allow viewing but disable proposal submission.
             currentUser = null;
             currentUserType = null;
-            dashboardLink.style.display = 'none'; // Hide dashboard link if not logged in
+            dashboardLink.style.display = 'none';
         } else {
             currentUser = user;
             const userDoc = await db.collection('users').doc(user.uid).get();
@@ -54,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Fetch project details regardless of login status (assuming public read in rules)
         fetchProjectDetails();
     });
 
@@ -62,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         projectDetailsContent.innerHTML = '<p>Loading project details...</p>';
         messageDiv.textContent = '';
         projectTitleHeader.textContent = 'Loading Project...';
+        deleteProjectButton.style.display = 'none'; // Hide delete button by default
 
         try {
             const projectDoc = await db.collection('projects').doc(currentProjectId).get();
@@ -86,21 +84,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         viewProposalsSection.style.display = 'block';
                         fetchProposals(currentProjectId); // Load proposals for this project
                         proposalSection.style.display = 'none'; // Don't show proposal form to project owner
+                        deleteProjectButton.style.display = 'inline-block'; // Show delete button to owner
                     } else if (currentUserType === 'designer' || currentUserType === 'architect') {
                         // Current user is a professional
                         proposalSection.style.display = 'block';
-                        viewProposalsSection.style.display = 'none'; // Professionals don't view others' proposals here
-                        // Check if professional has already submitted a proposal
+                        viewProposalsSection.style.display = 'none';
+                        deleteProjectButton.style.display = 'none'; // Hide delete button from professionals
                         await checkIfProfessionalProposed(currentUser.uid, currentProjectId);
+                    } else if (currentUserType === 'admin') { // NEW: Admin can also see delete button
+                        deleteProjectButton.style.display = 'inline-block';
+                        proposalSection.style.display = 'none'; // Admins typically don't submit proposals
+                        viewProposalsSection.style.display = 'block'; // Admins can view proposals
+                        fetchProposals(currentProjectId);
                     } else {
-                        // Other user types (e.g., admin, or just logged in non-owner)
+                        // Other user types (e.g., just logged in non-owner, non-professional)
                         proposalSection.style.display = 'none';
                         viewProposalsSection.style.display = 'none';
+                        deleteProjectButton.style.display = 'none';
                     }
                 } else {
                     // Not logged in or unknown user type
                     proposalSection.style.display = 'none';
                     viewProposalsSection.style.display = 'none';
+                    deleteProjectButton.style.display = 'none';
                 }
 
             } else {
@@ -113,6 +119,38 @@ document.addEventListener('DOMContentLoaded', () => {
             projectDetailsContent.innerHTML = '<p>Error loading project details. Please try again.</p>';
         }
     };
+
+    // --- NEW: Delete Project Logic ---
+    deleteProjectButton.addEventListener('click', async () => {
+        if (!currentUser || !currentProjectId) {
+            alert('Cannot delete: User not logged in or project ID missing.');
+            return;
+        }
+
+        const confirmDelete = confirm('Are you sure you want to delete this project? This action cannot be undone.');
+        if (!confirmDelete) {
+            return; // User cancelled
+        }
+
+        try {
+            // Delete the main project document
+            await db.collection('projects').doc(currentProjectId).delete();
+
+            // Optional: Delete proposals subcollection (Firestore doesn't auto-delete subcollections)
+            // This requires a Cloud Function for large subcollections, but for small ones, you can fetch and delete client-side.
+            // For a beginner, we'll omit auto-deleting proposals for simplicity, but know it's a thing.
+            // If you delete the parent document, the subcollection itself won't show in the console, but the data persists.
+            // Proper cleanup for nested collections is usually done with a Cloud Function on document deletion.
+
+            alert('Project deleted successfully!');
+            // Redirect to the customer dashboard after deletion
+            window.location.href = 'customer-dashboard.html';
+        } catch (error) {
+            console.error('Error deleting project:', error);
+            messageDiv.textContent = `Error deleting project: ${error.message}`;
+        }
+    });
+
 
     // --- Proposal Submission Logic (for Professionals) ---
     proposalForm.addEventListener('submit', async (e) => {
@@ -154,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 projectId: currentProjectId, // Redundant but useful for queries
                 professionalId: professionalId, // The designer/architect document ID
                 professionalUserId: currentUser.uid, // The Firebase Auth UID
+                professionalName: professionalDocQuery.docs[0].data().name, // Add name for easier display
                 professionalType: currentUserType,
                 bidAmount: bidAmount,
                 message: proposalMessage,
@@ -183,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error checking existing proposal:', error);
-            // Don't show critical error to user, just log
         }
     };
 
@@ -204,13 +242,12 @@ document.addEventListener('DOMContentLoaded', () => {
             proposalsList.innerHTML = ''; // Clear loading message
             for (const doc of proposalsSnapshot.docs) {
                 const proposal = doc.data();
-                // Fetch professional's name for display
-                const professionalDoc = await db.collection(proposal.professionalType + 's').doc(proposal.professionalId).get();
-                const professionalName = professionalDoc.exists ? professionalDoc.data().name : 'Unknown Professional';
+                // We stored professionalName when submitting, use that if available
+                const professionalDisplayName = proposal.professionalName || (proposal.professionalType + ' ' + proposal.professionalUserId.substring(0, 5) + '...');
 
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <strong>${professionalName}</strong> (${proposal.professionalType}) - Bid: $${proposal.bidAmount}<br>
+                    <strong>${professionalDisplayName}</strong> (${proposal.professionalType}) - Bid: $${proposal.bidAmount}<br>
                     Status: ${proposal.status}<br>
                     Message: ${proposal.message}<br>
                     <small>Submitted: ${new Date(proposal.submittedAt.toDate()).toLocaleDateString()}</small>
