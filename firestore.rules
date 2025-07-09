@@ -8,19 +8,18 @@ service cloud.firestore {
       allow read, create: if request.auth != null; // Any logged-in user can read/create their own user document
       allow update: if request.auth != null && request.auth.uid == userId; // Users can only update their own user document
       allow delete: if false; // Users cannot delete their own user document directly
-      // Admin override: Allows admin to read/update/delete any user document
-      allow read, update, delete: if isUserAdmin();
+      allow read, update, delete: if isUserAdmin(); // Admin override
     }
 
     // --- CUSTOMER PROFILES ---
     // Rules for the 'customers' collection
     match /customers/{customerId} {
       allow read: if true; // Publicly readable for exploring customers (if you allow that)
-      // A customer can create their own profile (linked to their UID from /users)
+      // Allow customer to read their OWN profile (for editing) OR if public read is true
+      allow read: if true || (request.auth != null && request.auth.uid == resource.data.userId); // MODIFIED READ RULE
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-      // A customer can update their own profile (if logged in and userId matches document)
       allow update: if request.auth != null && request.auth.uid == resource.data.userId;
-      allow delete: if false; // No direct deletion
+      allow delete: if false;
       allow read, update, delete: if isUserAdmin(); // Admin override
     }
 
@@ -28,9 +27,9 @@ service cloud.firestore {
     // Rules for the 'designers' collection
     match /designers/{designerId} {
       allow read: if true; // Publicly readable for exploration
-      // A designer can create their own profile (linked to their UID from /users)
+      // Allow designer to read their OWN profile (for editing) OR if public read is true
+      allow read: if true || (request.auth != null && request.auth.uid == resource.data.userId); // MODIFIED READ RULE
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-      // A designer can update their own profile (if logged in and userId matches document)
       allow update: if request.auth != null && request.auth.uid == resource.data.userId;
       allow delete: if false;
       allow read, update, delete: if isUserAdmin(); // Admin override
@@ -40,92 +39,90 @@ service cloud.firestore {
     // Rules for the 'architects' collection
     match /architects/{architectId} {
       allow read: if true; // Publicly readable for exploration
-      // An architect can create their own profile (linked to their UID from /users)
+      // Allow architect to read their OWN profile (for editing) OR if public read is true
+      allow read: if true || (request.auth != null && request.auth.uid == resource.data.userId); // MODIFIED READ RULE
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-      // An architect can update their own profile (if logged in and userId matches document)
+      allow update: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow delete: if false;
+      allow read, update, delete: if isUserAdmin(); // Admin override
+    }
+
+    // --- CONTRACTOR PROFILES ---
+    // Rules for the 'contractors' collection (NEW BLOCK)
+    match /contractors/{contractorId} {
+      allow read: if true; // Publicly readable for exploration
+      // Allow contractor to read their OWN profile (for editing) OR if public read is true
+      allow read: if true || (request.auth != null && request.auth.uid == resource.data.userId); // MODIFIED READ RULE
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
       allow update: if request.auth != null && request.auth.uid == resource.data.userId;
       allow delete: if false;
       allow read, update, delete: if isUserAdmin(); // Admin override
     }
 
     // --- PROJECT LISTINGS ---
-    // Rules for the 'projects' collection
-match /projects/{projectId} {
-  allow read: if true; // Projects are generally public for viewing
-  // Only authenticated customers can create projects, and the customerId must match their UID
-  allow create: if request.auth != null && request.auth.uid == request.resource.data.customerId;
-  // Project owner (customer) can update their own project
-  allow update: if request.auth != null && request.auth.uid == resource.data.customerId;
-  // Allow project owner to delete their own project
-  allow delete: if request.auth != null && request.auth.uid == resource.data.customerId;
-  allow read, update, delete: if isUserAdmin(); // Admin override for read/update/delete
-}
+    match /projects/{projectId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.customerId;
+      allow update: if request.auth != null && request.auth.uid == resource.data.customerId;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.customerId;
+      allow read, update, delete: if isUserAdmin();
+    }
 
-    // --- PROJECT PROPOSALS (OPTIONAL, if you implement bidding) ---
-    // This rule assumes proposals are direct subcollections of projects OR have a projectId field
+    // --- PROJECT PROPOSALS ---
     match /projects/{projectId}/proposals/{proposalId} {
-        // Only authenticated designers/architects can create proposals for a project
-        // Checks if user is designer/architect AND their auth.uid matches the professionalUserId they are writing
+        // Allow create if authenticated user is designer, architect, OR contractor
+        // AND their UID matches the professionalUserId they are writing.
         allow create: if request.auth != null &&
                       (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userType == 'designer' ||
-                       get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userType == 'architect') &&
+                       get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userType == 'architect' ||
+                       get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userType == 'contractor') && // INCLUDES CONTRACTOR
                       request.auth.uid == request.resource.data.professionalUserId;
 
-        // Project owner (customer) and professional who submitted can read
+        // Allow read if project owner (customer) OR professional who submitted
         allow read: if request.auth != null &&
                     (request.auth.uid == get(/databases/$(database)/documents/projects/$(projectId)).data.customerId ||
                      request.auth.uid == resource.data.professionalUserId);
 
-        // Only the professional who submitted it can update their own proposal (e.g., withdraw bid)
+        // Allow update if professional who submitted
         allow update: if request.auth != null && request.auth.uid == resource.data.professionalUserId;
-        allow delete: if false; // No direct deletion
-        allow read, update, delete: if isUserAdmin(); // Admin override
+        allow delete: if false;
+        allow read, update, delete: if isUserAdmin();
     }
 
     // --- REVIEWS ---
-    // Rules for the 'reviews' collection
     match /reviews/{reviewId} {
-      allow read: if true; // Reviews are publicly readable
-      // Only authenticated customers can create reviews, and the customerId must match their UID
+      allow read: if true;
       allow create: if request.auth != null && request.auth.uid == request.resource.data.customerId;
-      allow update: if false; // Reviews are generally immutable once created
+      allow update: if false;
       allow delete: if false;
-      allow read, update, delete: if isUserAdmin(); // Admin override
+      allow read, update, delete: if isUserAdmin();
     }
 
-    // --- RANKINGS (Updated by Cloud Functions, Read-Only for App) ---
-    // Rules for the 'rankings' collection
+    // --- RANKINGS ---
     match /rankings/{rankingType} {
-      allow read: if true; // Rankings are public
-      allow write: if false; // No one can write directly from client. Only Admin SDK via Cloud Functions.
-      allow read, update, delete: if isUserAdmin(); // Admin override
+      allow read: if true;
+      allow write: if false;
+      allow read, update, delete: if isUserAdmin();
     }
 
     // --- MESSAGING / CONVERSATIONS ---
-    // Rules for the 'conversations' collection and its 'messages' subcollection
     match /conversations/{conversationId} {
-      // Users can only read/write conversations they are a participant of
       allow read: if request.auth != null && request.resource.data.participants.hasAny([request.auth.uid]);
-      // Allow creation of a new conversation between two specific users
       allow create: if request.auth != null && request.resource.data.participants.hasAll([request.auth.uid, request.resource.data.participants[1]]) && request.resource.data.participants.size() == 2;
-      // Allow participants to update lastMessage/lastMessageAt (used for sorting conversations)
       allow update: if request.auth != null && request.resource.data.participants.hasAny([request.auth.uid]);
       allow delete: if false;
-      allow read, update, delete: if isUserAdmin(); // Admin override
+      allow read, update, delete: if isUserAdmin();
 
       match /messages/{messageId} {
-        // Users can only read messages in conversations they are a participant of
         allow read: if request.auth != null && get(/databases/$(database)/documents/conversations/$(conversationId)).data.participants.hasAny([request.auth.uid]);
-        // Users can only create messages if they are a participant AND the senderId matches their UID
         allow create: if request.auth != null && request.resource.data.senderId == request.auth.uid && get(/databases/$(database)/documents/conversations/$(conversationId)).data.participants.hasAny([request.auth.uid]);
         allow update: if false;
         allow delete: if false;
-        allow read, update, delete: if isUserAdmin(); // Admin override
+        allow read, update, delete: if isUserAdmin();
       }
     }
 
     // --- HELPER FUNCTIONS ---
-    // Function to check if the authenticated user has 'admin' userType in their 'users' document
     function isUserAdmin() {
       return request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userType == 'admin';
     }
