@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // User is logged in: Hide Login/Signup, Show Dashboard/Logout
             if (loginLinkLi) loginLinkLi.style.display = 'none';
             if (signUpLinkLi) signUpLinkLi.style.display = 'none';
-            if (dashboardLink) dashboardLink.style.display = 'block';
-            if (logoutButton) logoutButton.style.display = 'block';
+            if (dashboardLink) dashboardLink.style.display = 'inline';
+            if (logoutButton) logoutButton.style.display = 'inline';
 
             // Dynamically set the dashboard link based on user type from Firestore
             const userDoc = await db.collection('users').doc(user.uid).get();
