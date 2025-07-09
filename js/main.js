@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Select relevant navigation elements by their specific structure or IDs
-    const loginLinkLi = document.querySelector('nav ul li a[href="login.html"]')?.closest('li'); // Get the parent <li> of the Login link
-    const signUpLinkLi = document.querySelector('nav ul li a[href="signup.html"]')?.closest('li'); // Get the parent <li> of the Sign Up link
+    // We target the parent <li> element to hide/show them cleanly
+    const loginLinkLi = document.querySelector('nav ul li a[href="login.html"]')?.closest('li');
+    const signUpLinkLi = document.querySelector('nav ul li a[href="signup.html"]')?.closest('li');
 
-    // The Dashboard and Logout links should have IDs in HTML as set in previous steps
+    // These elements should have IDs in your HTML navigation bar
     const dashboardLink = document.getElementById('dashboardLink');
     const logoutButton = document.getElementById('logoutButton');
 
     // Initial state: Hide Dashboard/Logout, Show Login/Signup (if elements exist)
+    // This ensures correct state even before auth state is fully resolved by Firebase
     if (dashboardLink) dashboardLink.style.display = 'none';
     if (logoutButton) logoutButton.style.display = 'none';
     if (loginLinkLi) loginLinkLi.style.display = 'block'; // Ensure parent <li> is visible
@@ -15,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Firebase Authentication State Observer
+    // This listener runs every time the authentication state changes (login, logout, page load)
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             // User is logged in: Hide Login/Signup, Show Dashboard/Logout
@@ -23,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dashboardLink) dashboardLink.style.display = 'block';
             if (logoutButton) logoutButton.style.display = 'block';
 
-            // Dynamically set the dashboard link based on user type
+            // Dynamically set the dashboard link based on user type from Firestore
             const userDoc = await db.collection('users').doc(user.uid).get();
             if (userDoc.exists) {
                 const userType = userDoc.data().userType;
-                if (dashboardLink) {
+                if (dashboardLink) { // Ensure the dashboardLink element exists on the page
                     if (userType === 'customer') {
                         dashboardLink.href = 'customer-dashboard.html';
                     } else if (userType === 'designer') {
@@ -39,27 +42,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (userType === 'admin') {
                         dashboardLink.href = 'admin-dashboard.html';
                     } else {
-                        dashboardLink.href = 'index.html'; // Fallback if type is unknown
+                        dashboardLink.href = 'index.html'; // Fallback for unknown user types
                     }
                 }
             }
 
-            // Set up Logout functionality
+            // Set up Logout functionality (only once to avoid multiple event listeners)
             if (logoutButton) {
-                if (!logoutButton._hasClickListener) { // Prevent adding multiple listeners
+                // Check if an event listener has already been attached (using a custom property)
+                if (!logoutButton._hasClickListener) {
                     logoutButton.addEventListener('click', async (e) => {
-                        e.preventDefault();
+                        e.preventDefault(); // Prevent default link behavior
                         try {
-                            await auth.signOut();
+                            await auth.signOut(); // Perform Firebase logout
                             alert('You have been logged out.');
-                            // After logout, main.js will re-run onAuthStateChanged and show login/signup
-                            window.location.href = 'login.html'; // Redirect to login page
+                            // Redirect to login page after successful logout
+                            window.location.href = 'login.html';
                         } catch (error) {
                             console.error('Error logging out:', error);
                             alert('Error logging out. Please try again.');
                         }
                     });
-                    logoutButton._hasClickListener = true; // Mark as having listener
+                    logoutButton._hasClickListener = true; // Mark that listener is attached
                 }
             }
 
