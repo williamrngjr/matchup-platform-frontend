@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = 'designer-dashboard.html';
                 } else if (userType === 'architect') {
                     window.location.href = 'architect-dashboard.html';
-                } else {
-                    window.location.href = 'dashboard.html'; // Generic dashboard
+                } else if (userType === 'contractor') {
+                    window.location.href = 'contractor-dashboard.html'; // Generic dashboard
                 }
             } else {
                 messageDiv.textContent = 'User profile not found. Please contact support.';
