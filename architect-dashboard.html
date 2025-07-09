@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architect Dashboard - MatchUp</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">MatchUp</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore-designers.html">Designers</a></li>
+                <li><a href="explore-architects.html">Architects</a></li>
+                <li><a href="rankings.html">Rankings</a></li>
+                <li><a href="#" id="dashboardLink">Dashboard</a></li>
+                <li><a href="#" id="logoutButton">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Welcome, Architect!</h2>
+        <div class="dashboard-sections">
+            <div class="dashboard-section">
+                <h3>My Profile</h3>
+                <ul>
+                    <li><a href="architect-profile-edit.html">Edit My Profile</a></li>
+                    <li><a href="#" id="viewPublicProfileLink">View Public Profile</a></li>
+                </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>Available Projects</h3>
+                <ul id="availableProjectsList">
+                    <p>Loading available projects...</p>
+                    </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>My Proposals (Optional)</h3>
+                <ul id="myProposalsList">
+                    <p>No proposals submitted yet.</p>
+                    </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>My Reviews (Optional)</h3>
+                <ul id="myReviewsList">
+                    <p>No reviews received yet.</p>
+                    </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 MatchUp. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/main.js"></script> <script src="js/architect-dashboard.js"></script> </body>
+</html>
